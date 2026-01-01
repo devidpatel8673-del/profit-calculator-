@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <title>નફો ગણક</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="card">
+    <h2>નફો ગણક</h2>
+
+    <label>કાચો માલ (મહિનાની શરૂઆત નો સ્ટોક)</label>
+    <input id="opRM" type="number" placeholder="₹ રકમ દાખલ કરો">
+
+    <label> નવી ખરીદી કાચો માલ</label>
+    <input id="purchase" type="number" placeholder="₹ રકમ દાખલ કરો">
+
+    <label>કાચો માલ (મહિનાનો અંત વધેલો કાચો માલ)</label>
+    <input id="clRM" type="number" placeholder="₹ રકમ દાખલ કરો">
+
+    <label>ખર્ચ</label>
+    <input id="expense" type="number" placeholder="₹ રકમ દાખલ કરો">
+
+    <label>વેચાણ</label>
+    <input id="sales" type="number" placeholder="₹ રકમ દાખલ કરો">
+
+    <label>તૈયાર માલ (મહિનાની શરૂઆત તૈયાર નો માલ સ્ટોક)</label>
+    <input id="opFG" type="number" placeholder="₹ રકમ દાખલ કરો">
+
+    <label>તૈયાર માલ (મહિનાનો અંત વધેલો તૈયાર માલ)</label>
+    <input id="clFG" type="number" placeholder="₹ રકમ દાખલ કરો">
+
+    <button onclick="calculate()">નફો ગણો</button>
+
+    <div id="result" class="result"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
