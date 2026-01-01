@@ -1,58 +1,28 @@
 function calculate() {
-  // Get input values (default 0)
-  const opRM = Number(document.getElementById("opRM").value) || 0;
-  const purchase = Number(document.getElementById("purchase").value) || 0;
-  const clRM = Number(document.getElementById("clRM").value) || 0;
-  const expense = Number(document.getElementById("expense").value) || 0;
-  const sales = Number(document.getElementById("sales").value) || 0;
-  const opFG = Number(document.getElementById("opFG").value) || 0;
-  const clFG = Number(document.getElementById("clFG").value) || 0;
 
-  // -------------------------------
-  // RESULT 1 (LOCKED – BASE LOGIC)
-  // -------------------------------
+  // Input values (₹)
+  let opRM = parseFloat(document.getElementById("opRM").value) || 0;
+  let purchase = parseFloat(document.getElementById("purchase").value) || 0;
+  let clRM = parseFloat(document.getElementById("clRM").value) || 0;
+  let expense = parseFloat(document.getElementById("expense").value) || 0;
+  let sales = parseFloat(document.getElementById("sales").value) || 0;
+  let opFG = parseFloat(document.getElementById("opFG").value) || 0;
+  let clFG = parseFloat(document.getElementById("clFG").value) || 0;
 
-  // Raw material consumption
-  const rawUsed = opRM + purchase - clRM;
+  // Calculations
+  let rawMaterialConsumed = opRM + purchase - clRM;
+  let costOfProduction = rawMaterialConsumed + expense;
+  let costOfGoodsSold = opFG + costOfProduction - clFG;
+  let profit = sales - costOfGoodsSold;
 
-  // Total expense
-  const totalExpense = rawUsed + expense;
-
-  // Profit (base calculation)
-  const profit = sales - totalExpense;
-
-  // -------------------------------
-  // RESULT 2 (EXTRA EXPLANATION)
-  // -------------------------------
-
-  // Finished goods movement (for understanding)
-  const finishedGoodsUsed = opFG - clFG;
-
-  // -------------------------------
-  // DISPLAY RESULT
-  // -------------------------------
-
-  const resultDiv = document.getElementById("result");
-
-  resultDiv.innerHTML = `
-    <h3>નફો પરિણામ (મૂળ ગણતરી)</h3>
-    <p>કાચો માલ વપરાશ: ₹${rawUsed}</p>
-    <p>ખર્ચ: ₹${expense}</p>
-    <p>વેચાણ: ₹${sales}</p>
-    <p><strong>નફો: ₹${profit}</strong></p>
-
+  // Result display
+  let resultHTML = `
+    <p>🧾 કાચો માલ વપરાશ: ₹ ${rawMaterialConsumed.toFixed(2)}</p>
+    <p>🏭 ઉત્પાદન ખર્ચ: ₹ ${costOfProduction.toFixed(2)}</p>
+    <p>📦 વેચાયેલ માલ ખર્ચ (COGS): ₹ ${costOfGoodsSold.toFixed(2)}</p>
     <hr>
-
-    <h3>વિગતવાર સમજ / વધારાની ગણતરી</h3>
-    <p>કાચો માલ વપરાશ: ₹${rawUsed}</p>
-    <p>ખર્ચ: ₹${expense}</p>
-    <p>Total Exp: ${rawUsed} + ${expense} = ₹${totalExpense}</p>
-
-    <br>
-
-    <p>વેચાણ: ₹${sales} (તૈયાર માલ આધારિત)</p>
-    <p>તૈયાર માલ ફેરફાર: ${opFG} − ${clFG} = ₹${finishedGoodsUsed}</p>
-
-    <p><strong>નફો: ₹${profit}</strong></p>
+    <h3>${profit >= 0 ? "✅ નફો" : "❌ નુકસાન"} : ₹ ${profit.toFixed(2)}</h3>
   `;
+
+  document.getElementById("result").innerHTML = resultHTML;
 }
