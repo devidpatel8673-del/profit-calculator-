@@ -7,16 +7,34 @@ function formatIndian(num) {
 
 /* =========================
    Auto format while typing
+   (Cursor bounce FIXED)
    ========================= */
 document.querySelectorAll("input").forEach(input => {
   input.addEventListener("input", function () {
-    let raw = this.value.replace(/,/g, "");
+
+    let cursorPos = this.selectionStart;
+    let oldValue = this.value;
+
+    // Remove commas
+    let raw = oldValue.replace(/,/g, "");
+
+    // Allow empty
     if (raw === "") return;
+
+    // Allow only numbers
     if (isNaN(raw)) {
-      this.value = this.value.slice(0, -1);
+      this.value = oldValue.slice(0, -1);
       return;
     }
-    this.value = formatIndian(raw);
+
+    // Format value
+    let formatted = formatIndian(raw);
+
+    // Cursor adjustment
+    let diff = formatted.length - oldValue.length;
+
+    this.value = formatted;
+    this.setSelectionRange(cursorPos + diff, cursorPos + diff);
   });
 });
 
@@ -71,28 +89,37 @@ function calculate() {
     <h3>📊 ગણતરી વિગત (Calculation Details)</h3>
 
     <p><strong>1️⃣ કાચો માલ વપરાશ</strong></p>
-    <p>${rupee(opRM)} (Opening RM)
-       + ${rupee(purchase)} (Purchase)
-       − ${rupee(clRM)} (Closing RM)
-       = <strong>${rupee(rawUsed)}</strong></p>
+    <p>
+      ${rupee(opRM)} (Opening RM)
+      + ${rupee(purchase)} (Purchase)
+      − ${rupee(clRM)} (Closing RM)
+      = <strong>${rupee(rawUsed)}</strong>
+    </p>
 
     <p><strong>2️⃣ ઉત્પાદન ખર્ચ</strong></p>
-    <p>${rupee(rawUsed)} (Raw Used)
-       + ${rupee(expense)} (Expense)
-       = <strong>${rupee(costOfProduction)}</strong></p>
+    <p>
+      ${rupee(rawUsed)} (Raw Used)
+      + ${rupee(expense)} (Expense)
+      = <strong>${rupee(costOfProduction)}</strong>
+    </p>
 
     <p><strong>3️⃣ વેચાયેલ માલ ખર્ચ (COGS)</strong></p>
-    <p>${rupee(opFG)} (Opening FG)
-       + ${rupee(costOfProduction)} (Production Cost)
-       − ${rupee(clFG)} (Closing FG)
-       = <strong>${rupee(cogs)}</strong></p>
+    <p>
+      ${rupee(opFG)} (Opening FG)
+      + ${rupee(costOfProduction)} (Production Cost)
+      − ${rupee(clFG)} (Closing FG)
+      = <strong>${rupee(cogs)}</strong>
+    </p>
 
     <p><strong>4️⃣ નફો / નુકસાન</strong></p>
-    <p>${rupee(sales)} (Sales)
-       − ${rupee(cogs)} (COGS)
-       = <strong>${rupee(profit)}</strong></p>
+    <p>
+      ${rupee(sales)} (Sales)
+      − ${rupee(cogs)} (COGS)
+      = <strong>${rupee(profit)}</strong>
+    </p>
 
     <hr>
+
     <h2 style="color:${profit >= 0 ? 'green' : 'red'}">
       ${profit >= 0 ? "✅ કુલ નફો" : "❌ કુલ નુકસાન"} : ${rupee(profit)}
     </h2>
