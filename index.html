@@ -12,33 +12,32 @@
     <h2>નફો ગણક</h2>
 
     <label>કાચો માલ (મહિનાની શરૂઆત નો સ્ટોક)</label>
-    <input id="opRM" type="text" inputmode="numeric" placeholder="₹ રકમ દાખલ કરો">
+    <input id="opRM" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="₹ રકમ દાખલ કરો">
 
     <label>નવી ખરીદી કાચો માલ</label>
-    <input id="purchase" type="text" inputmode="numeric" placeholder="₹ રકમ દાખલ કરો">
+    <input id="purchase" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="₹ રકમ દાખલ કરો">
 
     <label>કાચો માલ (મહિનાનો અંત વધેલો કાચો માલ)</label>
-    <input id="clRM" type="text" inputmode="numeric" placeholder="₹ રકમ દાખલ કરો">
+    <input id="clRM" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="₹ રકમ દાખલ કરો">
 
     <label>ખર્ચ</label>
-    <input id="expense" type="text" inputmode="numeric" placeholder="₹ રકમ દાખલ કરો">
+    <input id="expense" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="₹ રકમ દાખલ કરો">
 
     <label>વેચાણ</label>
-    <input id="sales" type="text" inputmode="numeric" placeholder="₹ રકમ દાખલ કરો">
+    <input id="sales" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="₹ રકમ દાખલ કરો">
 
     <label>તૈયાર માલ (મહિનાની શરૂઆત તૈયાર નો માલ સ્ટોક)</label>
-    <input id="opFG" type="text" inputmode="numeric" placeholder="₹ રકમ દાખલ કરો">
+    <input id="opFG" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="₹ રકમ દાખલ કરો">
 
     <label>તૈયાર માલ (મહિનાનો અંત વધેલો તૈયાર માલ)</label>
-    <input id="clFG" type="text" inputmode="numeric" placeholder="₹ રકમ દાખલ કરો">
+    <input id="clFG" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="₹ રકમ દાખલ કરો">
 
     <button onclick="calculate()">નફો ગણો</button>
 
     <div id="result" class="result"></div>
   </div>
 
-  <!-- Cache busting added -->
-  <script src="script.js?v=4"></script>
-
+  <!-- Cache busting -->
+  <script src="script.js?v=5"></script>
 </body>
 </html>
