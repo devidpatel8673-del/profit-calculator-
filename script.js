@@ -7,11 +7,11 @@ function formatIndian(num) {
 
 /* =========================
    Auto format while typing
-   (NO 3-digit bug, NO cursor jump)
+   (Stable cursor, no 3-digit bug)
    ========================= */
 document.querySelectorAll("input").forEach(input => {
 
-  // Prevent non-numeric keys
+  // Only allow numbers
   input.addEventListener("keypress", function (e) {
     if (!/[0-9]/.test(e.key)) {
       e.preventDefault();
@@ -20,39 +20,33 @@ document.querySelectorAll("input").forEach(input => {
 
   input.addEventListener("input", function () {
 
-    // Save cursor position
-    let start = this.selectionStart;
+    let cursorPos = this.selectionStart;
+    let oldValue = this.value;
 
-    // Raw numeric value
-    let raw = this.value.replace(/,/g, "");
+    let raw = oldValue.replace(/,/g, "");
 
-    // Allow empty
     if (raw === "") {
       this.value = "";
       return;
     }
 
-    // Safety
     if (isNaN(raw)) return;
 
-    // Format number
     let formatted = formatIndian(raw);
 
     // Count commas before cursor
-    let beforeCursor = this.value
-      .slice(0, start)
+    let beforeCommas = oldValue
+      .slice(0, cursorPos)
       .replace(/[^,]/g, "").length;
 
-    // Set formatted value
     this.value = formatted;
 
     // Count commas after format
-    let afterCursor = formatted
-      .slice(0, start)
+    let afterCommas = formatted
+      .slice(0, cursorPos)
       .replace(/[^,]/g, "").length;
 
-    // Adjust cursor position
-    let newPos = start + (afterCursor - beforeCursor);
+    let newPos = cursorPos + (afterCommas - beforeCommas);
     this.setSelectionRange(newPos, newPos);
   });
 });
@@ -78,6 +72,7 @@ function rupee(n) {
    ========================= */
 function calculate() {
 
+  // Inputs
   let opRM = getNum("opRM");
   let purchase = getNum("purchase");
   let clRM = getNum("clRM");
@@ -86,38 +81,56 @@ function calculate() {
   let opFG = getNum("opFG");
   let clFG = getNum("clFG");
 
-  // Raw material consumed
+  // 1️⃣ કાચો માલ વપરાશ
   let rawUsed = opRM + purchase - clRM;
 
-  // Cost of production
+  // 2️⃣ ઉત્પાદન ખર્ચ
   let costOfProduction = rawUsed + expense;
 
-  // Cost of goods sold
+  // 3️⃣ વેચાયેલ માલ ખર્ચ
   let cogs = opFG + costOfProduction - clFG;
 
-  // Profit / Loss
+  // 4️⃣ નફો / નુકસાન
   let profit = sales - cogs;
 
-  // Output with explanation
+  // Gujarati Result Output
   document.getElementById("result").innerHTML = `
     <h3>📊 ગણતરી વિગત</h3>
 
-    <p><b>કાચો માલ વપરાશ</b><br>
-    ${rupee(opRM)} + ${rupee(purchase)} − ${rupee(clRM)}
-    = <b>${rupee(rawUsed)}</b></p>
+    <p><strong>1️⃣ કાચો માલ વપરાશ</strong></p>
+    <p>
+      ${rupee(opRM)} (શરૂઆતનો કાચો માલ)
+      + ${rupee(purchase)} (નવી ખરીદી)
+      − ${rupee(clRM)} (અંતનો બચેલો કાચો માલ)
+      = <strong>${rupee(rawUsed)}</strong>
+    </p>
 
-    <p><b>ઉત્પાદન ખર્ચ</b><br>
-    ${rupee(rawUsed)} + ${rupee(expense)}
-    = <b>${rupee(costOfProduction)}</b></p>
+    <p><strong>2️⃣ ઉત્પાદન ખર્ચ</strong></p>
+    <p>
+      ${rupee(rawUsed)} (વપરાયેલ કાચો માલ)
+      + ${rupee(expense)} (ખર્ચ)
+      = <strong>${rupee(costOfProduction)}</strong>
+    </p>
 
-    <p><b>COGS</b><br>
-    ${rupee(opFG)} + ${rupee(costOfProduction)} − ${rupee(clFG)}
-    = <b>${rupee(cogs)}</b></p>
+    <p><strong>3️⃣ વેચાયેલ માલ ખર્ચ</strong></p>
+    <p>
+      ${rupee(opFG)} (શરૂઆતનો તૈયાર માલ)
+      + ${rupee(costOfProduction)} (ઉત્પાદન ખર્ચ)
+      − ${rupee(clFG)} (અંતનો તૈયાર માલ)
+      = <strong>${rupee(cogs)}</strong>
+    </p>
 
-    <p><b>નફો / નુકસાન</b><br>
-    ${rupee(sales)} − ${rupee(cogs)}
-    = <b style="color:${profit >= 0 ? 'green' : 'red'}">
-      ${rupee(profit)}
-    </b></p>
+    <p><strong>4️⃣ નફો / નુકસાન</strong></p>
+    <p>
+      ${rupee(sales)} (વેચાણ)
+      − ${rupee(cogs)} (વેચાયેલ માલ ખર્ચ)
+      = <strong>${rupee(profit)}</strong>
+    </p>
+
+    <hr>
+
+    <h2 style="color:${profit >= 0 ? 'green' : 'red'}">
+      ${profit >= 0 ? "✅ કુલ નફો" : "❌ કુલ નુકસાન"} : ${rupee(profit)}
+    </h2>
   `;
 }
